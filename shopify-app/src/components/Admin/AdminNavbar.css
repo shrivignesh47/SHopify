@@ -1,0 +1,56 @@
+.admin-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #34495e;
+    color: #ecf0f1;
+    height: 60px;
+    padding: 0 20px;
+    position: fixed;
+    width: 98%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    height: 40px;
+    margin-right: 15px;
+}
+
+.navbar-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-notification, .navbar-logout {
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 20px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.navbar-notification:hover, .navbar-logout:hover {
+    color: #1abc9c;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 20px;
+}

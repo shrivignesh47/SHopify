@@ -1,0 +1,62 @@
+/* UserNavbar.css */
+.user-navbar {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Padding for spacing */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    position: fixed; /* Fixed positioning */
+    top: 0;
+    left: 0;
+    height: 5vh;
+    width: 98%;
+    z-index: 1000; /* Ensure it stays above other content */
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Space between logo and controls */
+    align-items: center; /* Vertically center items */
+}
+
+.user-navbar .navbar-logo {
+    height: 40px; /* Adjust logo size */
+    margin-right: 70vw; /* Space between logo and other elements */
+}
+
+.user-navbar .navbar-right {
+    display: flex; /* Flexbox for aligning controls */
+    align-items: center; /* Vertically center controls */
+}
+
+.user-navbar .navbar-username {
+    margin-right: 20px; /* Space between username and other elements */
+    font-weight: bold; /* Emphasize the username */
+}
+
+.user-navbar .navbar-notification,
+.user-navbar .navbar-logout {
+    background: none; /* No background */
+    border: none; /* No border */
+    color: white; /* White text color */
+    font-size: 20px; /* Consistent font size for icons */
+    margin-left: 15px; /* Space between icons */
+    cursor: pointer; /* Pointer cursor for clickability */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+.user-navbar .navbar-notification:hover,
+.user-navbar .navbar-logout:hover {
+    color: #e0e0e0; /* Light color on hover */
+}
+
+.user-navbar .navbar-sidebar-toggle {
+    background-color: #388E3C; /* Slightly darker green for button */
+    color: white; /* White text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 12px; /* Padding for button size */
+    cursor: pointer; /* Pointer cursor for clickability */
+    font-size: 18px; /* Adjust font size for better fit */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.user-navbar .navbar-sidebar-toggle:hover {
+    background-color: #2c6c2f; /* Darker green on hover */
+}

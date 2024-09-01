@@ -1,0 +1,64 @@
+/* src/components/AdminSidebar.css */
+
+.admin-sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    height: calc(100vh - 60px); /* Adjust based on the height of the navbar */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    position: fixed;
+    top: 60px; /* Height of the navbar */
+    transition: width 0.3s;
+}
+
+.admin-sidebar.collapsed {
+    width: 80px;
+}
+
+.admin-sidebar .sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -20px; /* Position outside of the sidebar */
+    border: none;
+    background: none;
+    color: #ecf0f1;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1000; /* Ensure the button is above other content */
+}
+
+.admin-sidebar .sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-sidebar .sidebar-links li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.admin-sidebar .sidebar-links li.active {
+    background-color: #16a085; /* Highlight active item */
+}
+
+.admin-sidebar .sidebar-links li:hover {
+    background-color: #1abc9c; /* Hover effect */
+}
+
+.admin-sidebar .sidebar-icon {
+    margin-right: 10px;
+    font-size: 18px; /* Adjust icon size */
+}
+
+.admin-sidebar .sidebar-text {
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.admin-sidebar .sidebar-text.hidden {
+    display: none;
+}

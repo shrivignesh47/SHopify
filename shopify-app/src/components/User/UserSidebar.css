@@ -1,0 +1,65 @@
+/* UserSidebar.css */
+.user-sidebar {
+    background-color: #f4f4f4;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    width: 204px;
+    transition: width 0.3s ease;
+    position: fixed;
+    top: 57px; /* Adjust based on navbar height */
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.user-sidebar.collapsed {
+    width: 60px;
+    padding: 10px 5px; /* Reduced padding when collapsed */
+}
+
+.user-sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-sidebar-menu li {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adds space between items */
+}
+
+.user-sidebar-menu li span {
+    font-size: 20px; /* Adjust icon size */
+    margin-right: 15px; /* Adjusts space between icon and text */
+}
+
+.user-sidebar-menu li:hover {
+    background-color: #ddd;
+}
+
+.user-sidebar-menu .active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.sidebar-section {
+    margin-bottom: 20px; /* Adds space between sections */
+}
+
+.sidebar-section h3 {
+    font-size: 16px;
+    margin: 0;
+    padding: 10px 0;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    display: block; /* Ensure heading is displayed */
+}
+
+/* Hide section headings when collapsed */
+.user-sidebar.collapsed .sidebar-section h3 {
+    display: none;
+}

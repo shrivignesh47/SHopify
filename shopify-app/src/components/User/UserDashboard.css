@@ -1,0 +1,28 @@
+/* Dashboard.css */
+.user-dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
+}
+
+.user-dashboard-container.sidebar-collapsed .user-sidebar {
+    width: 44px; /* Adjust width when collapsed */
+}
+
+.user-dashboard-main-content {
+    display: flex;
+    flex: 1;
+    margin-top: 60px; /* Adjust based on navbar height */
+}
+
+.user-dashboard-content-area {
+    flex: 1;
+    padding: 20px;
+    margin-left: 250px; /* Adjust based on sidebar width */
+    transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
+}
+
+.user-dashboard-container.sidebar-collapsed .user-dashboard-content-area {
+    margin-left: 85px; /* Adjust margin when sidebar is collapsed */
+}

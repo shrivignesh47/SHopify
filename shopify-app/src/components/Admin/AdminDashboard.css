@@ -1,0 +1,64 @@
+.admin-dashboard-container {
+    display: flex;
+    height: 90vh;
+    overflow: hidden;
+    margin-top: 60px; /* Height of the AdminNavbar */
+}
+
+.admin-main-content {
+    display: flex;
+    flex: 1;
+}
+
+.admin-content-area {
+    margin-left: 250px; /* Width of the AdminSidebar */
+    padding: 20px;
+    width: calc(100% - 250px); /* Remaining width after sidebar */
+    transition: margin-left 0.3s, width 0.3s;
+}
+
+.admin-sidebar.collapsed ~ .admin-content-area {
+    margin-left: 80px; /* Width when sidebar is collapsed */
+    width: calc(100% - 80px); /* Remaining width after collapsed sidebar */
+}
+/* src/components/AdminDashboard.css */
+
+.admin-dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin-top: -1vh;
+}
+
+.admin-navbar {
+    height: 60px; /* Height of the navbar */
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure navbar is above other content */
+}
+
+.admin-main-content {
+    display: flex;
+    margin-top: 60px; /* Space for the navbar */
+    height: calc(100vh - 60px); /* Adjust height to exclude navbar */
+    overflow: hidden;
+}
+
+.admin-content-area {
+    margin-left: 250px; /* Default width of the sidebar */
+    padding: 20px;
+    width: calc(100% - 250px); /* Remaining width after sidebar */
+    transition: margin-left 0.3s, width 0.3s;
+}
+
+.admin-sidebar.collapsed ~ .admin-content-area {
+    margin-left: 80px; /* Adjust based on collapsed sidebar width */
+    width: calc(100% - 80px); /* Adjust based on collapsed sidebar width */
+}
