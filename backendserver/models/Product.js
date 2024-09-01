@@ -16,4 +16,4 @@ const ProductSchema = new mongoose.Schema({
     images: { type: [String] } // Store image URLs or paths
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = ProductSchema; // Export the schema itself
