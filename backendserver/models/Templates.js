@@ -6,7 +6,7 @@ const TemplateSchema = new mongoose.Schema({
         type: String, 
         required: true, 
         unique: true, 
-        default: () => uuidv4() // Generate a unique ID by default
+        default: uuidv4 // Generate a unique ID by default
     },
     name: { 
         type: String, 
@@ -20,26 +20,21 @@ const TemplateSchema = new mongoose.Schema({
         required: true 
     },
     logo: { 
-        type: String // Base64 encoded image or URL
+        type: String, // Base64 encoded image or URL
+        validate: {
+            validator: function(v) {
+                // Example validation for base64 (you can adjust the regex as needed)
+                return /^(data:image\/[a-zA-Z]+;base64,)/.test(v) || /^(http|https):\/\/[^\s$.?#].[^\s]*$/.test(v);
+            },
+            message: 'Invalid logo URL or base64 encoded image'
+        }
     },
     products: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Product' 
-    }],
-    createdAt: { 
-        type: Date, 
-        default: Date.now 
-    },
-    updatedAt: { 
-        type: Date, 
-        default: Date.now 
-    }
-});
-
-// Middleware to update the `updatedAt` field on save
-TemplateSchema.pre('save', function(next) {
-    this.updatedAt = Date.now();
-    next();
+    }]
+}, {
+    timestamps: true // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = TemplateSchema;

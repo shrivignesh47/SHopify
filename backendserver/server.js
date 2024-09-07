@@ -3,8 +3,7 @@
 // const passport = require('passport');
 // const cors = require('cors');
 // const bodyParser = require('body-parser');
-// const path = require('path');
-// const { createSubdomain } = require('./utils/subdomainUtils'); // Ensure this utility is implemented
+// const { createSubdomain, getDatabaseUri } = require('./utils/subdomainUtils'); // Ensure these utilities are implemented
 // require('dotenv').config();
 
 // const app = express();
@@ -18,36 +17,51 @@
 // // Passport Config
 // require('./config/passport')(passport);
 
-// // Connect to MongoDB
+// // Connect to MongoDB (initial connection, tenant-specific connections will be created as needed)
 // mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 //     .then(() => console.log('MongoDB connected'))
-//     .catch(err => console.log(err));
+//     .catch(err => console.log('MongoDB connection error:', err));
+
+// // Middleware to handle dynamic subdomains
+// app.use(async (req, res, next) => {
+//     const host = req.headers.host;
+//     const domainParts = host.split('.');
+    
+//     if (domainParts.length > 2 && domainParts[0] !== 'www') {
+//         const subdomain = domainParts[0];
+//         req.tenant = subdomain;
+
+//         // Set the database connection for the tenant
+//         const tenantDbUri = getDatabaseUri(subdomain);
+//         mongoose.createConnection(tenantDbUri, {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true
+//         }).then(() => {
+//             console.log(`Connected to tenant database: ${subdomain}`);
+//             next();
+//         }).catch(err => {
+//             console.error(`Error connecting to tenant database: ${err}`);
+//             res.status(500).json({ error: 'Error connecting to tenant database' });
+//         });
+//     } else {
+//         next();
+//     }
+// });
 
 // // Routes
 // app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/products', require('./routes/products')); // Add this line for product routes
-
-// // Handle dynamic subdomains
-// app.use((req, res, next) => {
-//     const host = req.headers.host;
-//     const domainParts = host.split('.');
-//     if (domainParts.length > 2 && domainParts[0] !== 'www') {
-//         const subdomain = domainParts[0];
-//         req.tenant = subdomain; // Add tenant to the request object
-//         createSubdomain(subdomain); // Optional: Create tenant-specific resources
-//     }
-//     next();
-// });
-
-// // Serve frontend
+// app.use('/api/products', require('./routes/products')); // Ensure this is updated to handle tenant-specific data if necessary
+// app.use('/api/settings', require('./routes/Settings')); // Add this line for settings routes
 
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { createSubdomain, getDatabaseUri } = require('./utils/subdomainUtils'); // Ensure these utilities are implemented
+const { getDatabaseUri } = require('./utils/subdomainUtils'); // Ensure this utility is implemented
 require('dotenv').config();
 
 const app = express();
@@ -77,17 +91,23 @@ app.use(async (req, res, next) => {
 
         // Set the database connection for the tenant
         const tenantDbUri = getDatabaseUri(subdomain);
-        mongoose.createConnection(tenantDbUri, {
+        const tenantDb = mongoose.createConnection(tenantDbUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true
-        }).then(() => {
+        });
+
+        tenantDb.once('open', () => {
             console.log(`Connected to tenant database: ${subdomain}`);
+            req.tenantDb = tenantDb; // Attach tenant DB to request for use in routes
             next();
-        }).catch(err => {
+        });
+
+        tenantDb.on('error', (err) => {
             console.error(`Error connecting to tenant database: ${err}`);
             res.status(500).json({ error: 'Error connecting to tenant database' });
         });
     } else {
+        req.tenantDb = mongoose; // Use the default MongoDB connection if no subdomain
         next();
     }
 });
@@ -95,5 +115,7 @@ app.use(async (req, res, next) => {
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products')); // Ensure this is updated to handle tenant-specific data if necessary
+app.use('/api/templates', require('./routes/templates')); // Ensure this is updated to handle tenant-specific data if necessary
+app.use('/api/settings', require('./routes/settings')); // Add this line for settings routes
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

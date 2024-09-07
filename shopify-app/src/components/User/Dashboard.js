@@ -6,6 +6,7 @@ import Products from './Products'; // Import the Products component
 import Profile from './Profile'; // Import the Profile component
 import Settings from './Settings'; // Import the Settings component
 import Subdomain from './Subdomain'; // Import the Subdomain component
+import Template from './Template';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -31,8 +32,8 @@ const Dashboard = () => {
                 return <Settings />;
             case 'products':
                 return <Products />;
-            case 'subdomain':
-                return <Subdomain />;
+            case 'Template':
+                return <Template />;
             default:
                 return <Profile />;
         }

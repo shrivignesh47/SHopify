@@ -1,0 +1,116 @@
+/* src/components/Settings.css */
+
+.settings-page {
+    display: flex;
+    height: 100vh;
+    background-color: #fff;
+}
+
+
+.settings-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #f4f4f4;
+    overflow-y: auto;
+}
+
+.settings-section {
+    margin-bottom: 40px;
+}
+
+.settings-section h3 {
+    font-size: 24px;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.settings-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-display p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.edit-button, .save-button, .cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.save-button {
+    background-color: #28a745;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.save-button:hover {
+    background-color: #218838;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.settings-form .form-group {
+    margin-bottom: 20px;
+}
+
+.settings-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.settings-form input, .settings-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.settings-form input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .settings-page {
+        flex-direction: column;
+    }
+
+    .settings-content {
+        padding: 20px;
+    }
+
+    .form-actions {
+        justify-content: center;
+    }
+}

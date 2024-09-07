@@ -1,5 +1,5 @@
 // utils/subdomainUtils.js
-const Tenant = require('../models/Tenant'); // Assuming you have a Tenant model
+const Tenant = require('../models/Templates'); // Assuming you have a Tenant model
 
 const createSubdomain = async (subdomain) => {
     try {
