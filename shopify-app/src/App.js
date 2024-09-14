@@ -8,7 +8,7 @@ import AdminDashboard from './components/Admin/Dashboard';
 import ManageCompanies from './components/Admin/MangeCompanies';
 import PrivateRoute from './components/Common/PrivateRoute';
 import AdminRoute from './components/Common/AdminRoute';
-import Preview from './components/User/CustomizePage'; 
+import Preview from './components/User/Preview'; 
 function App() {
     return (
         <Router>

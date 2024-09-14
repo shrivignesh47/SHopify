@@ -16,7 +16,7 @@ const UserNavbar = ({ onToggleSidebar, username }) => {
                         // Clear the token from local storage or any other storage
                         localStorage.removeItem('authToken');
                         // Redirect to login page or any other page
-                        window.location.href = '/login';
+                        window.location.href = '/';
                     }
                 },
                 {
