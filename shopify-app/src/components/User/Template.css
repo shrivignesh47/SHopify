@@ -22,17 +22,9 @@ body {
   }
   
   .navbar.default {
-    background-color: #007bff;
+   background-color: antiquewhite;
   }
   
-  .navbar.transparent {
-    background-color: transparent;
-  }
-  
-  .navbar.sticky {
-    position: sticky;
-    top: 0;
-  }
   
   .sidebar {
     width: 250px;
@@ -47,19 +39,6 @@ body {
   }
   
   .sidebar.default {
-    background-color: #343a40;
-  }
-  
-  .sidebar.compact {
-    width: 200px;
-  }
-  
-  .sidebar.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 250px;
     background-color: #343a40;
   }
   
@@ -166,3 +145,93 @@ body {
     background: #ffffff;
     outline: none;
 }
+
+
+.navbar.search {
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar.search .navbar-search {
+    margin-left: auto;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+  }
+  
+
+  .navbar.menu {
+    background-color: #343a40;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .navbar.menu .navbar-menu {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .navbar.menu .navbar-menu a {
+    color: #fff;
+  }
+
+  .navbar.minimal {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar.minimal .navbar-minimal {
+    flex: 1;
+  }
+
+
+  .navbar.dynamic {
+    background-color: #007bff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar.dynamic .navbar-search {
+    margin-right: auto;
+  }
+  
+  .navbar.dynamic .navbar-menu {
+    display: flex;
+    gap: 15px;
+  }
+
+/* Centered Navbar Styles */
+.navbar.centered {
+    background-color: #28a745; /* Green background color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px; /* Add padding for better spacing */
+    color: #ffffff; /* White text color for contrast */
+  }
+  
+  .navbar.centered .navbar-logo {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .navbar.centered .navbar-menu {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .navbar.centered .navbar-menu a {
+    color: #ffffff; /* White text color for menu items */
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .navbar.centered .navbar-menu a:hover {
+    text-decoration: underline; /* Underline on hover for menu items */
+  }
+  
+
+  
