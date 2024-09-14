@@ -34,7 +34,7 @@ function App() {
                     />
 
                     <Route 
-                    path="/edit-template" 
+                    path="/preview" 
                     element={
                         <PrivateRoute>
                             <Preview />

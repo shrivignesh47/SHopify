@@ -1,0 +1,41 @@
+/* TemplateBuilder.css */
+
+.template-builder-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .template-builder-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .template-builder-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: auto;
+    background: #ffffff;
+  }
+  
+  .template-builder-content .grapesjs {
+    width: 100%;
+    height: calc(100vh - 80px); /* Adjust height as needed */
+  }
+  
+  @media (max-width: 768px) {
+    .template-builder-header {
+      font-size: 16px;
+    }
+  
+    .template-builder-content .grapesjs {
+      height: calc(100vh - 60px);
+    }
+  }
+  

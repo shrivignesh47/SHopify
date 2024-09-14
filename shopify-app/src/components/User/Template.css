@@ -168,7 +168,9 @@ body {
   
   .navbar.menu .navbar-menu {
     display: flex;
-    gap: 15px;
+    gap: 50px;
+    margin-top: -9vh;
+    margin-left: 30vh;
   }
   
   .navbar.menu .navbar-menu a {
@@ -212,11 +214,14 @@ body {
     color: #ffffff; /* White text color for contrast */
   }
   
-  .navbar.centered .navbar-logo {
+  .navbar.centered  {
     font-size: 24px;
     margin-bottom: 10px;
   }
-  
+  .tempnavbar-logo{
+    height: 10vh;
+  }
+
   .navbar.centered .navbar-menu {
     display: flex;
     gap: 15px;
@@ -360,3 +365,35 @@ body {
   .sidebar-collapsible ul ul {
     padding-left: 20px;
   }
+
+
+
+  /* Styling for the logo container */
+.tempnavbar-logo {
+  margin-right: 153vh; /* Space between the logo and the next item (menu/search) */
+  flex: 0 0 auto; /* Prevent the logo from growing or shrinking */
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the logo image */
+.tempnavbar-logo img {
+  max-height: 90px; /* Adjust height as needed */
+  max-width: 400%;
+  height: 27vh;
+  margin-top: -5vh;
+  border-radius: 5px; /* Optional: Add some rounding to the logo */
+  object-fit: contain; /* Ensures logo maintains aspect ratio */
+  transition: transform 0.3s ease; /* Smooth scaling effect */
+}
+
+/* Optional: Logo hover effect */
+.tempnavbar-logo img:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+
+
+.navbar-content{
+  margin-left: -3vh;
+}
