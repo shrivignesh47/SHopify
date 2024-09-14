@@ -97,29 +97,86 @@ const Navbar = ({ color, design, breadcrumbs, onToggleSidebar, onSearch, menuIte
 // Sidebar Component
 const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
   <aside className={`sidebar ${design} ${collapsed ? 'collapsed' : ''}`} style={{ backgroundColor: color }}>
-    {!collapsed && (
-      <div className="sidebar-content">
+    <button className="sidebar-toggle" onClick={onToggle}>
+      {collapsed ? '→' : '←'}
+    </button>
+
+    {/* Design Variants */}
+    {design === 'minimal' && !collapsed && (
+      <div className="sidebar-minimal">
         <ul>
           {items.map((item) => (
-            <li key={item.id}>
-              {design.includes('icons') && <i className={item.icon}></i>}
+            <li key={item.id} style={{ color: item.color }}>
               <a href={item.link}>{item.label}</a>
-              {design.includes('submenu') && item.submenu && (
-                <ul>
-                  {item.submenu.map((subItem) => (
-                    <li key={subItem.id}>
-                      <a href={subItem.link}>{subItem.label}</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <button onClick={() => onEditItem(item.id)}>Edit</button>
+              <button className="temp-edit-button" onClick={() => onEditItem(item.id)}>✎</button>
             </li>
           ))}
         </ul>
       </div>
     )}
-    {design === 'overlay' && <div className="sidebar-overlay"></div>}
+
+    {design === 'modern' && !collapsed && (
+      <div className="sidebar-modern">
+        <ul>
+          {items.map((item) => (
+            <li key={item.id} style={{ color: item.color }}>
+              <i className={`icon ${item.icon}`}></i>
+              <a href={item.link}>{item.label}</a>
+              {item.submenu && (
+                <ul>
+                  {item.submenu.map((subItem) => (
+                    <li key={subItem.id} style={{ color: subItem.color }}>
+                      <a href={subItem.link}>{subItem.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <button className="temp-edit-button" onClick={() => onEditItem(item.id)}>✎</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {design === 'centered' && !collapsed && (
+      <div className="sidebar-centered">
+        <div className="sidebar-logo">Logo</div>
+        <ul>
+          {items.map((item) => (
+            <li key={item.id} style={{ color: item.color }}>
+              <i className={`icon ${item.icon}`}></i>
+              <a href={item.link}>{item.label}</a>
+              <button className="temp-edit-button" onClick={() => onEditItem(item.id)}>✎</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {design === 'collapsible' && (
+      <div className="sidebar-collapsible">
+        {!collapsed && (
+          <ul>
+            {items.map((item) => (
+              <li key={item.id} style={{ color: item.color }}>
+                <i className={`icon ${item.icon}`}></i>
+                <a href={item.link}>{item.label}</a>
+                {item.submenu && (
+                  <ul>
+                    {item.submenu.map((subItem) => (
+                      <li key={subItem.id} style={{ color: subItem.color }}>
+                        <a href={subItem.link}>{subItem.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <button className="temp-edit-button" onClick={() => onEditItem(item.id)}>✎</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )}
   </aside>
 );
 
@@ -470,14 +527,14 @@ const TemplateBuilder = () => {
       </div>
       
 
-        <div className="template-form-group">
-          <label>Sidebar Design</label>
-          <select name="sidebarDesign" value={form.sidebarDesign} onChange={handleChange}>
-            <option value="default">Default</option>
-            <option value="modern">Modern</option>
-            <option value="minimal">Minimal</option>
-          </select>
-        </div>
+      <div className="template-form-group">
+      <label>Sidebar Design</label>
+      <select name="sidebarDesign" value={form.sidebarDesign} onChange={handleChange}>
+        <option value="default">Default</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+      </select>
+    </div>
 
         <button type="button" onClick={handlePreview}>Preview</button>
         <button type="button" onClick={handleDeploy}>Deploy</button>
@@ -552,6 +609,14 @@ const TemplateBuilder = () => {
                 onChange={(e) => setEditingItem({ ...editingItem, icon: e.target.value })}
               />
             </div>
+            <div className="template-form-group">
+            <label>Color</label>
+            <input
+              type="color"
+              value={editingItem.color}
+              onChange={(e) => setEditingItem({ ...editingItem, color: e.target.value })}
+            />
+          </div>
             <button type="submit">Save</button>
             <button type="button" onClick={() => setEditingItem(null)}>Cancel</button>
           </form>
