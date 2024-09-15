@@ -31,26 +31,17 @@ const addTemplate = async (req, res) => {
 
     try {
         const userDb = await connectUserDb(userId);
-
-        // Ensure Template model is using the correct schema
         const TemplateModel = userDb.model('Template', Template.schema);
 
-        const {
-            templateId,
-            name,
-            themeColor,
-            logo,
-            products
-        } = req.body;
+        const { templateId, name, themeColor } = req.body;
 
-        const logoPath = req.file ? await uploadLogo(req.file) : '';
+        const logoPath = req.file ? await uploadLogo(req.file) : '';  // Upload logo if provided
 
         const newTemplate = new TemplateModel({
             templateId,
             name,
             themeColor,
-            logo: logoPath ? fs.readFileSync(logoPath, 'base64') : logo, // Convert logo to base64 if needed
-            products: products ? products.split(',').map(id => id.trim()) : []
+            logo: logoPath ? fs.readFileSync(logoPath, 'base64') : '', // Convert to base64 if logo exists
         });
 
         const savedTemplate = await newTemplate.save();
@@ -96,17 +87,9 @@ const updateTemplate = async (req, res) => {
 
     try {
         const userDb = await connectUserDb(userId);
-
-        // Ensure Template model is using the correct schema
         const TemplateModel = userDb.model('Template', Template.schema);
 
-        const {
-            templateId,
-            name,
-            themeColor,
-            logo,
-            products
-        } = req.body;
+        const { templateId, name, themeColor } = req.body;
 
         const logoPath = req.file ? await uploadLogo(req.file) : '';
 
@@ -114,8 +97,7 @@ const updateTemplate = async (req, res) => {
             templateId,
             name,
             themeColor,
-            logo: logoPath ? fs.readFileSync(logoPath, 'base64') : logo, // Convert logo to base64 if needed
-            products: products ? products.split(',').map(id => id.trim()) : []
+            logo: logoPath ? fs.readFileSync(logoPath, 'base64') : '', // Convert to base64 if logo exists
         };
 
         const updatedTemplate = await TemplateModel.findByIdAndUpdate(id, updatedData, { new: true });
@@ -144,7 +126,9 @@ const deleteTemplate = async (req, res) => {
         if (deletedTemplate) {
             if (deletedTemplate.logo) {
                 const logoPath = path.join(__dirname, '../uploads/', deletedTemplate.logo);
-                await fs.promises.unlink(logoPath);
+                if (fs.existsSync(logoPath)) {
+                    await fs.promises.unlink(logoPath); // Remove logo file if it exists
+                }
             }
             res.status(200).json({ message: 'Template deleted successfully' });
         } else {

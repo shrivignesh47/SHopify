@@ -10,11 +10,23 @@
 //   menuItems, 
 //   showAuthLinks, 
 //   onPageChange,
-//   logo // New prop for logo
+//   logo,
+//   cart = [], // Default empty array for cart
+//   setCart, // Function to update cart
+//   isCartOpen = false, // Default false for cart visibility
+//   setIsCartOpen // Function to toggle cart visibility
 // }) => {
 //   const renderMenuItems = () => (
 //     menuItems.map((item, index) => (
-//       <a key={index} href={item.link} className="navbar-menu-item">
+//       <a 
+//         key={index} 
+//         href={item.link} 
+//         className="navbar-menu-item"
+//         onClick={(e) => {
+//           e.preventDefault();
+//           onPageChange(item.id);
+//         }}
+//       >
 //         {item.label}
 //       </a>
 //     ))
@@ -30,9 +42,12 @@
 //     />
 //   );
 
+//   const handleCartClick = () => {
+//     setIsCartOpen(!isCartOpen);
+//   };
+
 //   return (
 //     <nav className={`navbar ${design}`} style={{ backgroundColor: color }}>
-//       {/* Sidebar Toggle Button */}
 //       <button 
 //         className="sidebar-toggle" 
 //         onClick={onToggleSidebar} 
@@ -41,46 +56,41 @@
 //         ☰
 //       </button>
 
-//       {/* Navbar Design Variants */}
-//       {design === 'menu' && (
-//         <div className="navbar-content">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           <div className="navbar-menu">{renderMenuItems()}</div>
-//         </div>
-//       )}
-//       {design === 'search' && (
-//         <div className="navbar-content">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           {renderSearch()}
-//         </div>
-//       )}
-//       {design === 'minimal' && (
-//         <div className="navbar-content">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           {/* Additional minimal design content */}
-//         </div>
-//       )}
-//       {design === 'sticky' && (
-//         <div className="navbar-content">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           <div className="navbar-menu">{renderMenuItems()}</div>
-//         </div>
-//       )}
-//       {design === 'dynamic' && (
-//         <div className="navbar-content">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           {renderSearch()}
-//           <div className="navbar-menu">{renderMenuItems()}</div>
-//         </div>
-//       )}
-//       {design === 'centered' && (
-//         <div className="navbar-content navbar-centered">
-//           {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
-//           <div className="navbar-menu">{renderMenuItems()}</div>
+//       <div className="navbar-content">
+//         {logo && <div className="navbar-logo"><img src={logo} alt="Logo" /></div>}
+//         {design === 'menu' && <div className="navbar-menu">{renderMenuItems()}</div>}
+//         {(design === 'search' || design === 'minimal' || design === 'dynamic') && renderSearch()}
+//         {design === 'dynamic' && <div className="navbar-menu">{renderMenuItems()}</div>}
+//         {design === 'centered' && <div className="navbar-menu navbar-centered">{renderMenuItems()}</div>}
+//       </div>
+
+//       <button className="cart-button" onClick={handleCartClick}>
+//         Cart ({cart.length})
+//       </button>
+
+//       {isCartOpen && (
+//         <div className="cart-popup">  
+//           <h2>Your Cart</h2>
+//           {cart.length === 0 ? (
+//             <p>Your cart is empty.</p>
+//           ) : (
+//             <ul>
+//               {cart.map((item) => (
+//                 <li key={item.id}>
+//                   <img src={item.image} alt={item.name} className="cart-item-image" />
+//                   <div className="cart-item-details">
+//                     <h4>{item.name}</h4>
+//                     <p>Price: ₹{item.price}</p>
+//                     <button onClick={() => setCart(cart.filter(i => i.id !== item.id))}>Remove</button>
+//                   </div>
+//                 </li>
+//               ))}
+//             </ul>
+//           )}
+//           <button onClick={() => onPageChange('order')}>Proceed to Checkout</button>
 //         </div>
 //       )}
 
-//       {/* Authentication Links */}
 //       {showAuthLinks && (
 //         <div className="navbar-auth-links">
 //           <a
@@ -120,14 +130,23 @@
 //   menuItems: PropTypes.arrayOf(PropTypes.shape({
 //     link: PropTypes.string.isRequired,
 //     label: PropTypes.string.isRequired,
+//     id: PropTypes.string.isRequired
 //   })).isRequired,
 //   showAuthLinks: PropTypes.bool.isRequired,
 //   onPageChange: PropTypes.func.isRequired,
-//   logo: PropTypes.string
+//   logo: PropTypes.string,
+//   cart: PropTypes.arrayOf(PropTypes.shape({
+//     id: PropTypes.string.isRequired,
+//     name: PropTypes.string.isRequired,
+//     image: PropTypes.string,
+//     price: PropTypes.number.isRequired
+//   })),
+//   setCart: PropTypes.func.isRequired, // Ensure this is required
+//   isCartOpen: PropTypes.bool,
+//   setIsCartOpen: PropTypes.func.isRequired
 // };
 
 // export default Navbar;
-
 
 
 import React from 'react';
@@ -142,7 +161,11 @@ const Navbar = ({
   menuItems, 
   showAuthLinks, 
   onPageChange,
-  logo 
+  logo,
+  cart = [], 
+  setCart, 
+  isCartOpen = false, 
+  setIsCartOpen 
 }) => {
   const renderMenuItems = () => (
     menuItems.map((item, index) => (
@@ -151,8 +174,8 @@ const Navbar = ({
         href={item.link} 
         className="navbar-menu-item"
         onClick={(e) => {
-          e.preventDefault(); // Prevent default link behavior
-          onPageChange(item.id); // Call the function to change the page
+          e.preventDefault();
+          onPageChange(item.id);
         }}
       >
         {item.label}
@@ -170,9 +193,21 @@ const Navbar = ({
     />
   );
 
+  const handleCartClick = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
+  const handleAddMoreClick = () => {
+    setIsCartOpen(false); // Close the cart popup
+  };
+
+  const handleBuyClick = () => {
+    setIsCartOpen(false); // Close the cart popup
+    onPageChange('order'); // Navigate to the order page
+  };
+
   return (
     <nav className={`navbar ${design}`} style={{ backgroundColor: color }}>
-      {/* Sidebar Toggle Button */}
       <button 
         className="sidebar-toggle" 
         onClick={onToggleSidebar} 
@@ -181,23 +216,42 @@ const Navbar = ({
         ☰
       </button>
 
-      {/* Navbar Design Variants */}
       <div className="navbar-content">
-        {logo && <div className="tempnavbar-logo"><img src={logo} alt="Logo" /></div>}
+        {logo && <div className="navbar-logo"><img src={logo} alt="Logo" /></div>}
         {design === 'menu' && <div className="navbar-menu">{renderMenuItems()}</div>}
-        {design === 'search' && renderSearch()}
-        {design === 'minimal' &&  renderSearch()}
-        {design === 'sticky' && <div className="navbar-menu">{renderMenuItems()}</div>}
-        {design === 'dynamic' && (
-          <div>
-            {renderSearch()}
-            <div className="navbar-menu">{renderMenuItems()}</div>
-          </div>
-        )}
+        {(design === 'search' || design === 'minimal' || design === 'dynamic') && renderSearch()}
+        {design === 'dynamic' && <div className="navbar-menu">{renderMenuItems()}</div>}
         {design === 'centered' && <div className="navbar-menu navbar-centered">{renderMenuItems()}</div>}
       </div>
 
-      {/* Authentication Links */}
+      <button className="cart-button" onClick={handleCartClick}>
+        Cart ({cart.length})
+      </button>
+
+      {isCartOpen && (
+        <div className="cart-popup">  
+          <h2>Your Cart</h2>
+          {cart.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <ul>
+              {cart.map((item) => (
+                <li key={item.id}>
+                  <img src={item.image} alt={item.name} className="cart-item-image" />
+                  <div className="cart-item-details">
+                    <h4>{item.name}</h4>
+                    <p>Price: ₹{item.price}</p>
+                    <button onClick={() => setCart(cart.filter(i => i.id !== item.id))}>Remove</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+          <button onClick={handleAddMoreClick}>Add More</button>
+          <button onClick={handleBuyClick}>Buy</button>
+        </div>
+      )}
+
       {showAuthLinks && (
         <div className="navbar-auth-links">
           <a
@@ -241,7 +295,16 @@ Navbar.propTypes = {
   })).isRequired,
   showAuthLinks: PropTypes.bool.isRequired,
   onPageChange: PropTypes.func.isRequired,
-  logo: PropTypes.string
+  logo: PropTypes.string,
+  cart: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    price: PropTypes.number.isRequired
+  })),
+  setCart: PropTypes.func.isRequired,
+  isCartOpen: PropTypes.bool,
+  setIsCartOpen: PropTypes.func.isRequired
 };
 
 export default Navbar;
