@@ -497,17 +497,6 @@ const TemplateBuilder = () => {
           value={form.sidebarColor}
           onChange={handleChange}
         />
-        <div className="template-form-group">
-          <label>Product Style</label>
-          <select
-            name="productStyle"
-            value={form.productStyle}
-            onChange={handleChange}
-          >
-            <option value="grid">Grid</option>
-            <option value="list">List</option>
-          </select>
-        </div>
 
         <div className="template-form-group">
           <label>Pages</label>

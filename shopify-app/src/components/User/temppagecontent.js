@@ -10,7 +10,7 @@ const PageContent = ({
   setCart,
   setPage,
   testimonials = [], // Testimonials from parent
-  aboutDescriptions ='' , // About description from parent
+  aboutDescriptions = '', // About description from parent
   theme = {}, // Theme settings from parent
   carouselImages = [],
 }) => {
@@ -48,7 +48,6 @@ const PageContent = ({
   const addToCart = (product) => {
     setCart((prevCart) => [...prevCart, product]);
   };
-
 
   // Handle order form changes
   const handleOrderChange = (e) => {
@@ -117,7 +116,6 @@ const PageContent = ({
     );
   };
 
-
   // About Us Section
   const AboutUs = ({ description }) => (
     <section className="temp-page-about-section">
@@ -126,21 +124,32 @@ const PageContent = ({
     </section>
   );
 
-  // Testimonials Section
-  const Testimonials = ({ testimonials }) => (
-    <section className="temp-page-testimonials-section">
-      <h2>What Our Customers Say</h2>
-      <div className="temp-page-testimonial-list">
-        {testimonials.map((testimonial, index) => (
-          <div key={index} className="temp-page-testimonial-item">
-            <blockquote>{testimonial.quote}</blockquote>
-            <p>- {testimonial.author}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+  // Testimonials Section with Carousel
+  const Testimonials = ({ testimonials }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+      }, 3000); // Change testimonial every 3 seconds
+
+      return () => clearInterval(interval); // Clear interval on component unmount
+    }, [testimonials.length]);
+
+    return (
+      <section className="temp-page-testimonials-section">
+        <h2>What Our Customers Say</h2>
+        <div className="temp-page-testimonial-carousel">
+          {testimonials.length > 0 && (
+            <div className="temp-page-testimonial-item">
+              <blockquote>{testimonials[currentIndex].quote}</blockquote>
+              <p>- {testimonials[currentIndex].author}</p>
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  };
 
   // Loading state
   if (isLoading) {
@@ -176,9 +185,9 @@ const PageContent = ({
             onProductChange={onProductChange}
           />
         </section>
+
         {/* About Us Section */}
         <AboutUs description={aboutDescriptions} />
-  
 
         {/* Testimonials Section */}
         <Testimonials testimonials={testimonials} />
