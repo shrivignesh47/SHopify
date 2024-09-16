@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import './Template.css';
 import Navbar from './Tempnavbar';
 import Sidebar from './tempsidebar';
@@ -24,7 +23,6 @@ const ColorPicker = ({ name, value, onChange }) => (
 const TemplateBuilder = () => {
   const [form, setForm] = useState({
     name: '',
-    description: '',
     navbarColor: '#007bff',
     sidebarColor: '#343a40',
     logo: null,
@@ -35,7 +33,13 @@ const TemplateBuilder = () => {
     footerDesign: 'minimal',
     navbarDesign: 'default',
     sidebarDesign: 'default',
-    breadcrumbs: ['Home'],
+    theme: {
+      backgroundColor: '#ffffff',
+      textColor: '#000000'
+    },
+    testimonials: [],
+    aboutDescriptions: '',
+
   });
 
 
@@ -48,7 +52,9 @@ const TemplateBuilder = () => {
   const [deployUrl, setDeployUrl] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingItem, setEditingItem] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [products] = useState([]);
+  
+  
   const [sidebarItems, setSidebarItems] = useState([
     { id: 'home', icon: 'icon-home', label: 'Home', link: '#home' },
     { id: 'products', icon: 'icon-products', label: 'Products', link: '#products' },
@@ -69,30 +75,13 @@ const TemplateBuilder = () => {
     ] : []),
   ]);
 
-  const fetchProducts = useCallback(async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/api/products', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setProducts(response.data);
-    } catch (err) {
-      console.error('Error fetching products', err);
-    }
-  }, []);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setForm(prevForm => ({ ...prevForm, [name]: value }));
   }, []);
 
-  const handleProductChange = useCallback((id) => {
-    console.log('Edit product with ID:', id);
-  }, []);
 
   const handleLogoChange = useCallback((e) => {
     const file = e.target.files[0];
@@ -109,6 +98,49 @@ const TemplateBuilder = () => {
     setPage(newPage);
   };
 
+
+  const handleAddTestimonial = () => {
+    setForm(prevForm => ({
+      ...prevForm,
+      testimonials: [...prevForm.testimonials, { quote: '', author: '' }]
+    }));
+  };
+
+  const handleTestimonialChange = (index, field, value) => {
+    const newTestimonials = [...form.testimonials];
+    newTestimonials[index] = { ...newTestimonials[index], [field]: value };
+    setForm(prevForm => ({
+      ...prevForm,
+      testimonials: newTestimonials
+    }));
+  };
+
+  const handleAddAboutDescription = () => {
+    setForm(prevForm => ({
+      ...prevForm,
+      aboutDescriptions: [...prevForm.aboutDescriptions, { text: '' }]
+    }));
+  };
+  
+  const handleAboutDescriptionChange = (index, value) => {
+    const newDescriptions = [...form.aboutDescriptions];
+    newDescriptions[index].text = value;
+    setForm(prevForm => ({
+      ...prevForm,
+      aboutDescriptions: newDescriptions
+    }));
+  };
+  
+  const handleThemeChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prevForm => ({
+      ...prevForm,
+      theme: {
+        ...prevForm.theme,
+        [name]: value
+      }
+    }));
+  };
   
 
   const handlePagesChange = useCallback((e) => {
@@ -125,10 +157,11 @@ const TemplateBuilder = () => {
     });
   }, []);
 
-  const handleCarouselImageChange = useCallback((e) => {
-    const files = Array.from(e.target.files).map(file => URL.createObjectURL(file));
-    setCarouselImages(files);
-  }, []);
+  const handlecarouselImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const images = files.map(file => URL.createObjectURL(file));
+    setCarouselImages(images);
+  };
 
   const handlePreview = () => {
     if (!form.name) {
@@ -205,18 +238,6 @@ const TemplateBuilder = () => {
     `).join('');
   
     // Generate HTML for products
-    const productsHTML = products
-      .filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
-      .map(product => `
-        <div class="product-item">
-          <h4>${product.name}</h4>
-          <p>${product.description}</p>
-          <p>Category: ${product.category}</p>
-          <p>Price: $${product.price}</p>
-          <p>Stock: ${product.stock} units</p>
-        </div>
-      `).join('');
-  
     // Generate HTML for footer
     const footerHTML = `
       <footer class="footer">
@@ -532,14 +553,14 @@ const TemplateBuilder = () => {
         </div>
 
         <div className="template-form-group">
-          <label>Carousel Images</label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleCarouselImageChange}
-          />
-        </div>
+        <h2>Upload Carousel Images</h2>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*" 
+              onChange={handlecarouselImageUpload} 
+            />
+          </div>
         
         <div className="template-form-group">
           <label>Footer Design</label>
@@ -586,17 +607,53 @@ const TemplateBuilder = () => {
           />
         </div>
         <div className="template-form-group">
-          <label>Breadcrumbs</label>
-          <input
-            type="text"
-            name="breadcrumbs"
-            value={form.breadcrumbs.join(', ')}
-            onChange={(e) => setForm(prevForm => ({
-              ...prevForm,
-              breadcrumbs: e.target.value.split(',').map(item => item.trim())
-            }))}
-          />
-        </div>
+        <label>Theme</label>
+        <ColorPicker
+          name="backgroundColor"
+          value={form.theme?.backgroundColor || '#ffffff'}
+          onChange={handleThemeChange}
+        />
+        <ColorPicker
+          name="textColor"
+          value={form.theme?.textColor || '#000000'}
+          onChange={handleThemeChange}
+        />
+      </div>
+
+        <div className="template-form-group">
+        <h2>Testimonials</h2>
+        {form.testimonials.map((testimonial, index) => (
+          <div key={index} className="testimonial-item">
+            <input
+              type="text"
+              placeholder="Quote"
+              value={testimonial.quote}
+              onChange={(e) => handleTestimonialChange(index, 'quote', e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Author"
+              value={testimonial.author}
+              onChange={(e) => handleTestimonialChange(index, 'author', e.target.value)}
+            />
+          </div>
+        ))}
+        <button type="button" onClick={handleAddTestimonial}>Add Testimonial</button>
+      </div>
+
+      <div className="template-form-group">
+      <h2>About Us Description</h2>
+      <div className="about-description-item">
+        <textarea
+          placeholder="Description"
+          value={form.aboutDescriptions}
+          onChange={(e) => setForm({ ...form, aboutDescriptions: e.target.value })}
+        />
+      </div>
+    </div>
+    
+
+
         <button type="button" onClick={handlePreview}>Preview</button>
         <button type="button" onClick={handleDeploy}>Deploy</button>
         <button type="button" onClick={handleDownload}>Download HTML</button>
@@ -608,7 +665,6 @@ const TemplateBuilder = () => {
           <Navbar
             color={form.navbarColor}
             design={form.navbarDesign}
-            breadcrumbs={form.breadcrumbs}
             onToggleSidebar={toggleSidebar}
             onSearch={(query) => setSearchQuery(query)}
             menuItems={navbarItems}
@@ -618,17 +674,21 @@ const TemplateBuilder = () => {
             setCart={setCart}
             isCartOpen={isCartOpen}
             setIsCartOpen={setIsCartOpen}
+            
           />
           <div className="container">
-            <Sidebar
-              color={form.sidebarColor}
-              design={form.sidebarDesign}
-              collapsed={sidebarCollapsed}
-              onToggle={toggleSidebar}
-              items={sidebarItems}
-              onEditItem={handleEditItem}
-              onSidebarItemClick={handlePageChange} // This line connects sidebar clicks to page change
-            />
+            {/* Conditionally render Sidebar based on design */}
+            {form.sidebarDesign !== 'default' && (
+              <Sidebar
+                color={form.sidebarColor}
+                design={form.sidebarDesign}
+                collapsed={sidebarCollapsed}
+                onToggle={toggleSidebar}
+                items={sidebarItems}
+                onEditItem={handleEditItem}
+                onSidebarItemClick={handlePageChange}
+              />
+            )}
             <main className="content">
               {form.pages.includes('login') && <PageContent page="login" />}
               {form.pages.includes('signup') && <PageContent page="signup" />}
@@ -640,7 +700,11 @@ const TemplateBuilder = () => {
                   cart={cart}
                   setPage={setPage}
                   setCart={setCart}
-                  setSearchQuery={setSearchQuery} />         
+                  carouselImages={carouselImages}
+                  theme={form.theme}
+                  testimonials={form.testimonials}
+                  aboutDescriptions={form.aboutDescriptions}   
+                  setSearchQuery={setSearchQuery} />     
                 </>
               )}
               {!form.pages.includes('home') && !form.pages.includes('login') && !form.pages.includes('signup') && <PageContent page="default" />}

@@ -1,12 +1,17 @@
-import React from 'react'
+import React from 'react';
 
+const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => {
+  if (!items || items.length === 0) {
+    // Render nothing if there are no items
+    return null;
+  }
 
-const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
+  return (
     <aside className={`sidebar ${design} ${collapsed ? 'collapsed' : ''}`} style={{ backgroundColor: color }}>
       <button className="sidebar-toggle" onClick={onToggle}>
         {collapsed ? '→' : '←'}
       </button>
-  
+
       {/* Design Variants */}
       {design === 'minimal' && !collapsed && (
         <div className="sidebar-minimal">
@@ -20,7 +25,7 @@ const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
           </ul>
         </div>
       )}
-  
+
       {design === 'modern' && !collapsed && (
         <div className="sidebar-modern">
           <ul>
@@ -43,7 +48,7 @@ const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
           </ul>
         </div>
       )}
-  
+
       {design === 'centered' && !collapsed && (
         <div className="sidebar-centered">
           <div className="sidebar-logo">Logo</div>
@@ -58,7 +63,7 @@ const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
           </ul>
         </div>
       )}
-  
+
       {design === 'collapsible' && (
         <div className="sidebar-collapsible">
           {!collapsed && (
@@ -85,5 +90,6 @@ const Sidebar = ({ color, design, collapsed, onToggle, items, onEditItem }) => (
       )}
     </aside>
   );
-  
-  export default Sidebar;
+};
+
+export default Sidebar;

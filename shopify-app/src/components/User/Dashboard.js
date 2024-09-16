@@ -7,6 +7,7 @@ import Profile from './Profile'; // Import the Profile component
 import Settings from './Settings'; // Import the Settings component
 import Subdomain from './Subdomain'; // Import the Subdomain component
 import Template from './Template';
+import Payment from './Payment';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -34,6 +35,8 @@ const Dashboard = () => {
                 return <Products />;
             case 'Template':
                 return <Template />;
+            case 'Payment':
+                return <Payment />;
             default:
                 return <Profile />;
         }

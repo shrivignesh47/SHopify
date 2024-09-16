@@ -15,7 +15,10 @@ const UserSidebar = ({ setActiveTab, activeTab, isCollapsed }) => {
                     </li>
                     <li className={activeTab === 'sales' ? 'active' : ''} onClick={() => setActiveTab('sales')}>
                         {isCollapsed ? <span>💵</span> : 'Sales'}
-                    </li>
+                        </li>
+                        <li className={activeTab === 'Payment' ? 'active' : ''} onClick={() => setActiveTab('Payment')}>
+                            {isCollapsed ? <span>⭐</span> : 'Payment'}
+                        </li>
                     <li className={activeTab === 'report' ? 'active' : ''} onClick={() => setActiveTab('report')}>
                         {isCollapsed ? <span>📊</span> : 'Report'}
                     </li>
